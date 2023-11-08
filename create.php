@@ -1,4 +1,16 @@
 <?php
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "myshop";
+
+//create connection
+$connection = new mysqli($servername, $username, $password, $database);
+
+
+
+
 $name = "";
 $email = "";
 $phone = "";
@@ -20,6 +32,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // add new client to database
+        $sql = "INSERT INTO clients (name,email,phone, address)" .
+            "VALUES ('$name', '$email', '$phone', '$address')";
+
+
+        $result = $connection->query($sql);
+
+
+        if (!$result) {
+            $errorMessage = "Invalid query: " . $connection->error;
+            break;
+        }
+
 
         $name = "";
         $email = "";
@@ -27,6 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $address = "";
 
         $successMessage = "Client added sucessfully!";
+
+        header("location: /myshop/index.php");
+        exit;
     } while (false);
 }
 
@@ -41,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Shop</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <script src=https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js></script>
 </head>
 
 <body>
@@ -57,7 +85,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         ";
         }
-
         ?>
 
         <form method="post">
